@@ -22,7 +22,9 @@ const Table = ({ vehicles, handleEdit, handleDelete }) => {
 					{vehicles ? (
 						vehicles.map((vehicle, i) => (
 							<tr key={vehicle.id} className={i % 2 === 0 ? 'bg-gray-100' : ''}>
-								<td className='py-2 px-4 border-b'>{vehicle.id}</td>
+								<td className='py-2 px-4 border-b'>
+									{vehicle.id.slice(0, 3) + '...'}
+								</td>
 								<td className='py-2 px-4 border-b'>{vehicle.make}</td>
 								<td className='py-2 px-4 border-b'>{vehicle.model}</td>
 								<td className='py-2 px-4 border-b'>{vehicle.registration}</td>

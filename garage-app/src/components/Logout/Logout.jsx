@@ -22,7 +22,7 @@ const Logout = ({ setIsAuthenticated }) => {
 								Swal.showLoading();
 							},
 							willClose: () => {
-								// localStorage.setItem('is_authenticated', false);
+								localStorage.setItem('is_authenticated', false);
 								setIsAuthenticated(false);
 							},
 						});
