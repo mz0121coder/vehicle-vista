@@ -6,7 +6,7 @@ import Add from './Add';
 import Edit from './Edit';
 import { vehiclesData } from '../../data/vehiclesData';
 
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, doc, deleteDoc } from 'firebase/firestore';
 import { db } from '../../config/firestore.js';
 
 const Dashboard = ({ setIsAuthenticated }) => {
@@ -45,7 +45,8 @@ const Dashboard = ({ setIsAuthenticated }) => {
 		}).then(result => {
 			if (result.value) {
 				const [vehicle] = vehicles.filter(vehicle => vehicle.id === id);
-				// TODO delete document
+				// delete document
+				deleteDoc(doc(db, 'vehicles', id));
 				Swal.fire({
 					icon: 'success',
 					title: 'Deleted!',
