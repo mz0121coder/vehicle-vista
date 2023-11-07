@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../../config/firestore.js';
@@ -9,6 +9,11 @@ const Add = ({ vehicles, setVehicles, setIsAdding, getVehicles }) => {
 	const [registration, setRegistration] = useState('');
 	const [notes, setNotes] = useState('');
 	const [repaired, setRepaired] = useState('');
+
+	useEffect(() => {
+		localStorage.setItem('vehicles', JSON.stringify(vehicles));
+		console.log({ vehicles });
+	}, [vehicles]);
 
 	const handleAdd = async e => {
 		e.preventDefault();
@@ -30,13 +35,14 @@ const Add = ({ vehicles, setVehicles, setIsAdding, getVehicles }) => {
 		};
 
 		// Add a new document with a generated id.
-		try {
-			await addDoc(collection(db, 'vehicles'), {
-				...newVehicle,
-			});
-		} catch (error) {
-			console.log(error);
-		}
+		if (db)
+			try {
+				await addDoc(collection(db, 'vehicles'), {
+					...newVehicle,
+				});
+			} catch (error) {
+				console.log(error);
+			}
 
 		const updatedVehicles = [...vehicles, newVehicle];
 

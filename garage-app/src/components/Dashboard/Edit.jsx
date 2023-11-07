@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import { db } from '../../config/firestore';
 import { doc, setDoc } from 'firebase/firestore';
@@ -18,6 +18,11 @@ const Edit = ({
 	);
 	const [notes, setNotes] = useState(selectedVehicle.notes);
 	const [repaired, setRepaired] = useState(selectedVehicle.repaired);
+
+	useEffect(() => {
+		localStorage.setItem('vehicles', JSON.stringify(vehicles));
+		console.log({ vehicles });
+	}, [vehicles]);
 
 	const handleUpdate = async e => {
 		e.preventDefault();
@@ -40,9 +45,10 @@ const Edit = ({
 		};
 
 		// Add a new document in collection "vehicles"
-		await setDoc(doc(db, 'vehicles', id), {
-			...updatedVehicle,
-		});
+		if (db)
+			await setDoc(doc(db, 'vehicles', id), {
+				...updatedVehicle,
+			});
 
 		const updatedVehicles = vehicles.map(vehicle =>
 			vehicle.id === id ? updatedVehicle : vehicle

@@ -28,6 +28,11 @@ const Dashboard = ({ setIsAuthenticated }) => {
 		getVehicles();
 	}, []);
 
+	useEffect(() => {
+		localStorage.setItem('vehicles', JSON.stringify(vehicles));
+		console.log({ vehicles });
+	}, [vehicles]);
+
 	const handleEdit = id => {
 		const [vehicle] = vehicles.filter(vehicle => vehicle.id === id);
 		setSelectedVehicle(vehicle);
@@ -46,7 +51,7 @@ const Dashboard = ({ setIsAuthenticated }) => {
 			if (result.value) {
 				const [vehicle] = vehicles.filter(vehicle => vehicle.id === id);
 				// delete document
-				deleteDoc(doc(db, 'vehicles', id));
+				if (db) deleteDoc(doc(db, 'vehicles', id));
 				Swal.fire({
 					icon: 'success',
 					title: 'Deleted!',

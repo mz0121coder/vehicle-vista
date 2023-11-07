@@ -7,11 +7,11 @@ import {
 import Swal from 'sweetalert2';
 
 const Login = ({ setIsAuthenticated }) => {
-	// const adminEmail = 'admin@example.com';
-	// const adminPassword = 'qwerty';
+	const adminEmail = 'test@mail.com';
+	const adminPassword = 'sample';
 
-	const [email, setEmail] = useState();
-	const [password, setPassword] = useState();
+	const [email, setEmail] = useState(adminEmail);
+	const [password, setPassword] = useState(adminPassword);
 
 	const handleLogin = async e => {
 		e.preventDefault();
@@ -140,12 +140,12 @@ const Login = ({ setIsAuthenticated }) => {
 							name='Login'
 							value='Login'
 						/>
-						<input
+						{/* <input
 							className='bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'
 							type='submit'
 							name='Register'
 							value='Register'
-						/>
+						/> */}
 					</div>
 				</form>
 			</div>
