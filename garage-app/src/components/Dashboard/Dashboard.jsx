@@ -83,7 +83,7 @@ const Dashboard = ({ setIsAuthenticated }) => {
 	return (
 		<div className='container mx-auto'>
 			{!isAdding && !isEditing && (
-				<>
+				<div className='container mx-auto'>
 					<Header
 						setIsAdding={setIsAdding}
 						setIsAuthenticated={setIsAuthenticated}
@@ -94,7 +94,7 @@ const Dashboard = ({ setIsAuthenticated }) => {
 						handleEdit={handleEdit}
 						handleDelete={handleDelete}
 					/>
-				</>
+				</div>
 			)}
 			{isAdding && (
 				<Add
