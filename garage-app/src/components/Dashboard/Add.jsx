@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../../config/firestore.js';
 
-const Add = ({ vehicles, setVehicles, setIsAdding }) => {
+const Add = ({ vehicles, setVehicles, setIsAdding, getVehicles }) => {
 	const [make, setMake] = useState('');
 	const [model, setModel] = useState('');
 	const [registration, setRegistration] = useState('');
 	const [notes, setNotes] = useState('');
 	const [repaired, setRepaired] = useState('');
 
-	const handleAdd = e => {
+	const handleAdd = async e => {
 		e.preventDefault();
-		if (!make || !model || !registration || !notes || !repaired) {
+		if (!make || !model || !registration || !repaired) {
 			return Swal.fire({
 				icon: 'error',
 				title: 'Error!',
@@ -27,10 +29,20 @@ const Add = ({ vehicles, setVehicles, setIsAdding }) => {
 			repaired,
 		};
 
+		// Add a new document with a generated id.
+		try {
+			await addDoc(collection(db, 'vehicles'), {
+				...newVehicle,
+			});
+		} catch (error) {
+			console.log(error);
+		}
+
 		const updatedVehicles = [...vehicles, newVehicle];
 
 		setVehicles(updatedVehicles);
 		setIsAdding(false);
+		getVehicles();
 
 		Swal.fire({
 			icon: 'success',
@@ -108,7 +120,6 @@ const Add = ({ vehicles, setVehicles, setIsAdding }) => {
 						name='notes'
 						value={notes}
 						onChange={e => setNotes(e.target.value)}
-						required
 					/>
 				</div>
 				<div className='mb-6'>

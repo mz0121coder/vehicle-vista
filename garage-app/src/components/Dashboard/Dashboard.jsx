@@ -79,6 +79,7 @@ const Dashboard = ({ setIsAuthenticated }) => {
 					vehicles={vehicles}
 					setVehicles={setVehicles}
 					setIsAdding={setIsAdding}
+					getVehicles={getVehicles}
 				/>
 			)}
 			{isEditing && (
