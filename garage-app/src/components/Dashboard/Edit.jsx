@@ -13,11 +13,11 @@ const Edit = ({ vehicles, selectedVehicle, setVehicles, setIsEditing }) => {
 
 	const handleUpdate = e => {
 		e.preventDefault();
-		if (!make || !model || !registration || !notes || !repaired) {
+		if (!make || !model || !registration || !repaired) {
 			return Swal.fire({
 				icon: 'error',
 				title: 'Error!',
-				text: 'All fields are required.',
+				text: 'All fields except Notes are required.',
 				showConfirmButton: true,
 			});
 		}
@@ -66,6 +66,7 @@ const Edit = ({ vehicles, selectedVehicle, setVehicles, setIsEditing }) => {
 						name='make'
 						value={make}
 						onChange={e => setMake(e.target.value)}
+						required
 					/>
 				</div>
 				<div className='mb-4'>
@@ -81,6 +82,7 @@ const Edit = ({ vehicles, selectedVehicle, setVehicles, setIsEditing }) => {
 						name='model'
 						value={model}
 						onChange={e => setModel(e.target.value)}
+						required
 					/>
 				</div>
 				<div className='mb-4'>
@@ -96,6 +98,7 @@ const Edit = ({ vehicles, selectedVehicle, setVehicles, setIsEditing }) => {
 						name='registration'
 						value={registration}
 						onChange={e => setRegistration(e.target.value)}
+						required
 					/>
 				</div>
 				<div className='mb-4'>
@@ -104,10 +107,10 @@ const Edit = ({ vehicles, selectedVehicle, setVehicles, setIsEditing }) => {
 						htmlFor='notes'>
 						Notes
 					</label>
-					<input
+					<textarea
 						className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
 						id='notes'
-						type='number'
+						type='text'
 						name='notes'
 						value={notes}
 						onChange={e => setNotes(e.target.value)}
@@ -119,14 +122,17 @@ const Edit = ({ vehicles, selectedVehicle, setVehicles, setIsEditing }) => {
 						htmlFor='repaired'>
 						Repaired
 					</label>
-					<input
+					<select
 						className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
 						id='repaired'
-						type='text'
 						name='repaired'
 						value={repaired}
 						onChange={e => setRepaired(e.target.value)}
-					/>
+						required>
+						<option value=''>Select</option>
+						<option value='true'>True</option>
+						<option value='false'>False</option>
+					</select>
 				</div>
 				<div>
 					<input

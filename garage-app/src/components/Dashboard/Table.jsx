@@ -1,4 +1,5 @@
 import React from 'react';
+import { FaCheck, FaTimes } from 'react-icons/fa';
 
 const Table = ({ vehicles, handleEdit, handleDelete }) => {
 	return (
@@ -26,7 +27,9 @@ const Table = ({ vehicles, handleEdit, handleDelete }) => {
 								<td className='py-2 px-4 border-b'>{vehicle.model}</td>
 								<td className='py-2 px-4 border-b'>{vehicle.registration}</td>
 								<td className='py-2 px-4 border-b'>{vehicle.notes}</td>
-								<td className='py-2 px-4 border-b'>{vehicle.repaired}</td>
+								<td className='py-2 px-4 border-b'>
+									{vehicle.repaired ? <FaCheck /> : <FaTimes />}
+								</td>
 								<td className='py-2 px-4 border-b text-right'>
 									<button
 										onClick={() => handleEdit(vehicle.id)}

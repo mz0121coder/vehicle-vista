@@ -28,7 +28,7 @@ const Logout = ({ setIsAuthenticated }) => {
 
 	return (
 		<button
-			className='bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded shadow'
+			className='bg-gray-300 hover:bg-gray-400 text-gray-700 font-semibold py-2 px-4 rounded shadow'
 			onClick={handleLogout}>
 			Logout
 		</button>

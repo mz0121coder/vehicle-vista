@@ -28,6 +28,7 @@ const Add = ({ vehicles, setVehicles, setIsAdding }) => {
 		};
 
 		const updatedVehicles = [...vehicles, newVehicle];
+
 		setVehicles(updatedVehicles);
 		setIsAdding(false);
 
@@ -59,6 +60,7 @@ const Add = ({ vehicles, setVehicles, setIsAdding }) => {
 						name='make'
 						value={make}
 						onChange={e => setMake(e.target.value)}
+						required
 					/>
 				</div>
 				<div className='mb-4'>
@@ -74,6 +76,7 @@ const Add = ({ vehicles, setVehicles, setIsAdding }) => {
 						name='model'
 						value={model}
 						onChange={e => setModel(e.target.value)}
+						required
 					/>
 				</div>
 				<div className='mb-4'>
@@ -89,6 +92,7 @@ const Add = ({ vehicles, setVehicles, setIsAdding }) => {
 						name='registration'
 						value={registration}
 						onChange={e => setRegistration(e.target.value)}
+						required
 					/>
 				</div>
 				<div className='mb-4'>
@@ -97,13 +101,14 @@ const Add = ({ vehicles, setVehicles, setIsAdding }) => {
 						htmlFor='notes'>
 						Notes
 					</label>
-					<input
+					<textarea
 						className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
 						id='notes'
 						type='text'
 						name='notes'
 						value={notes}
 						onChange={e => setNotes(e.target.value)}
+						required
 					/>
 				</div>
 				<div className='mb-6'>
@@ -112,14 +117,17 @@ const Add = ({ vehicles, setVehicles, setIsAdding }) => {
 						htmlFor='repaired'>
 						Repaired
 					</label>
-					<input
+					<select
 						className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
 						id='repaired'
-						type='text'
 						name='repaired'
 						value={repaired}
 						onChange={e => setRepaired(e.target.value)}
-					/>
+						required>
+						<option value=''>Select</option>
+						<option value='true'>True</option>
+						<option value='false'>False</option>
+					</select>
 				</div>
 				<div>
 					<input
