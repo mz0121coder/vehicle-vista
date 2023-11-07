@@ -1,26 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
-
 import Header from './Header';
 import Table from './Table';
 import Add from './Add';
 import Edit from './Edit';
-
 import { vehiclesData } from '../../data/vehiclesData';
 
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../../config/firestore.js';
+
 const Dashboard = ({ setIsAuthenticated }) => {
-	const [vehicles, setVehicles] = useState(vehiclesData);
+	const [vehicles, setVehicles] = useState();
 	const [selectedVehicle, setSelectedVehicle] = useState(null);
 	const [isAdding, setIsAdding] = useState(false);
 	const [isEditing, setIsEditing] = useState(false);
 
+	const getEmployees = async () => {
+		const querySnapshot = await getDocs(collection(db, 'vehicles'));
+		querySnapshot.forEach(doc => {
+			// doc.data() is never undefined for query doc snapshots
+			console.log(doc.id, ' => ', doc.data());
+		});
+		setEmployees(employees);
+	};
+
 	useEffect(() => {
 		// TODO: create getEmployees function and call it here
+		getEmployees();
 	}, []);
 
 	const handleEdit = id => {
 		const [vehicle] = vehicles.filter(vehicle => vehicle.id === id);
-
 		setSelectedVehicle(vehicle);
 		setIsEditing(true);
 	};
@@ -36,9 +46,7 @@ const Dashboard = ({ setIsAuthenticated }) => {
 		}).then(result => {
 			if (result.value) {
 				const [vehicle] = vehicles.filter(vehicle => vehicle.id === id);
-
 				// TODO delete document
-
 				Swal.fire({
 					icon: 'success',
 					title: 'Deleted!',
@@ -46,7 +54,6 @@ const Dashboard = ({ setIsAuthenticated }) => {
 					showConfirmButton: false,
 					timer: 1500,
 				});
-
 				const vehiclesCopy = vehicles.filter(vehicle => vehicle.id !== id);
 				setVehicles(vehiclesCopy);
 			}
@@ -54,7 +61,7 @@ const Dashboard = ({ setIsAuthenticated }) => {
 	};
 
 	return (
-		<div className='container'>
+		<div className='container mx-auto'>
 			{!isAdding && !isEditing && (
 				<>
 					<Header
