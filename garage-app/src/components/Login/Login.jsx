@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import Swal from 'sweetalert2';
 
 const Login = ({ setIsAuthenticated }) => {
-	const adminEmail = 'admin@example.com';
-	const adminPassword = 'qwerty';
-	const [email, setEmail] = useState('admin@example.com');
-	const [password, setPassword] = useState('qwerty');
+	// const adminEmail = 'admin@example.com';
+	// const adminPassword = 'qwerty';
 
-	const handleLogin = e => {
+	const [email, setEmail] = useState();
+	const [password, setPassword] = useState();
+
+	const handleLogin = async e => {
 		e.preventDefault();
-		if (email === adminEmail && password === adminPassword) {
+
+		const auth = getAuth();
+
+		try {
+			await signInWithEmailAndPassword(auth, email, password);
 			Swal.fire({
 				timer: 1500,
 				showConfirmButton: false,
@@ -17,7 +23,7 @@ const Login = ({ setIsAuthenticated }) => {
 					Swal.showLoading();
 				},
 				willClose: () => {
-					localStorage.setItem('is_authenticated', true);
+					// localStorage.setItem('is_authenticated', true);
 					setIsAuthenticated(true);
 					Swal.fire({
 						icon: 'success',
@@ -27,7 +33,7 @@ const Login = ({ setIsAuthenticated }) => {
 					});
 				},
 			});
-		} else {
+		} catch (error) {
 			Swal.fire({
 				timer: 1500,
 				showConfirmButton: false,
@@ -43,6 +49,42 @@ const Login = ({ setIsAuthenticated }) => {
 					});
 				},
 			});
+		}
+
+		if (email === adminEmail && password === adminPassword) {
+			// Swal.fire({
+			// 	timer: 1500,
+			// 	showConfirmButton: false,
+			// 	willOpen: () => {
+			// 		Swal.showLoading();
+			// 	},
+			// 	willClose: () => {
+			// 		localStorage.setItem('is_authenticated', true);
+			// 		setIsAuthenticated(true);
+			// 		Swal.fire({
+			// 			icon: 'success',
+			// 			title: 'Successfully logged in!',
+			// 			showConfirmButton: false,
+			// 			timer: 1500,
+			// 		});
+			// 	},
+			// });
+		} else {
+			// Swal.fire({
+			// 	timer: 1500,
+			// 	showConfirmButton: false,
+			// 	willOpen: () => {
+			// 		Swal.showLoading();
+			// 	},
+			// 	willClose: () => {
+			// 		Swal.fire({
+			// 			icon: 'error',
+			// 			title: 'Error!',
+			// 			text: 'Incorrect email or password.',
+			// 			showConfirmButton: true,
+			// 		});
+			// 	},
+			// });
 		}
 	};
 
