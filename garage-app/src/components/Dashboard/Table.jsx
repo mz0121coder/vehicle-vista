@@ -25,9 +25,7 @@ const Table = ({ vehicles, handleEdit, handleDelete }) => {
 								<td className='py-2 px-4 border-b'>{vehicle.make}</td>
 								<td className='py-2 px-4 border-b'>{vehicle.model}</td>
 								<td className='py-2 px-4 border-b'>{vehicle.registration}</td>
-								<td className='py-2 px-4 border-b'>
-									{formatter.format(vehicle.notes)}
-								</td>
+								<td className='py-2 px-4 border-b'>{vehicle.notes}</td>
 								<td className='py-2 px-4 border-b'>{vehicle.repaired}</td>
 								<td className='py-2 px-4 border-b text-right'>
 									<button
