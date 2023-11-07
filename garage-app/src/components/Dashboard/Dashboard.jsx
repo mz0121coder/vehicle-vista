@@ -15,18 +15,17 @@ const Dashboard = ({ setIsAuthenticated }) => {
 	const [isAdding, setIsAdding] = useState(false);
 	const [isEditing, setIsEditing] = useState(false);
 
-	const getEmployees = async () => {
+	const getVehicles = async () => {
 		const querySnapshot = await getDocs(collection(db, 'vehicles'));
-		querySnapshot.forEach(doc => {
-			// doc.data() is never undefined for query doc snapshots
-			console.log(doc.id, ' => ', doc.data());
-		});
-		setEmployees(employees);
+		const vehicles = querySnapshot.docs.map(doc => ({
+			id: doc.id,
+			...doc.data(),
+		}));
+		setVehicles(vehicles);
 	};
 
 	useEffect(() => {
-		// TODO: create getEmployees function and call it here
-		getEmployees();
+		getVehicles();
 	}, []);
 
 	const handleEdit = id => {
