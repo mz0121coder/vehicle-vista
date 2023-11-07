@@ -10,6 +10,7 @@ const Dashboard = ({ setIsAuthenticated }) => {
 	const [vehicles, setVehicles] = useState(
 		() => JSON.parse(localStorage.getItem('vehicles')) || vehiclesData
 	);
+
 	console.log({ vehicles });
 	const [selectedVehicle, setSelectedVehicle] = useState(null);
 	const [isAdding, setIsAdding] = useState(false);
@@ -50,6 +51,35 @@ const Dashboard = ({ setIsAuthenticated }) => {
 		});
 	};
 
+	const resetData = () => {
+		Swal.fire({
+			icon: 'warning',
+			title: 'Are you sure?',
+			text: 'This will reset all vehicle data to the initial state.',
+			showCancelButton: true,
+			confirmButtonText: 'Yes, reset data!',
+			cancelButtonText: 'No, cancel!',
+			customClass: {
+				confirmButton:
+					'bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline',
+				cancelButton:
+					'bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline',
+			},
+		}).then(result => {
+			if (result.value) {
+				setVehicles(vehiclesData);
+				localStorage.removeItem('vehicles');
+				Swal.fire({
+					icon: 'success',
+					title: 'Reset!',
+					text: 'All vehicle data has been reset.',
+					showConfirmButton: false,
+					timer: 1500,
+				});
+			}
+		});
+	};
+
 	return (
 		<div className='container mx-auto'>
 			{!isAdding && !isEditing && (
@@ -57,6 +87,7 @@ const Dashboard = ({ setIsAuthenticated }) => {
 					<Header
 						setIsAdding={setIsAdding}
 						setIsAuthenticated={setIsAuthenticated}
+						resetData={resetData}
 					/>
 					<Table
 						vehicles={vehicles}

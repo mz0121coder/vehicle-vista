@@ -9,7 +9,7 @@ const Edit = ({ vehicles, selectedVehicle, setVehicles, setIsEditing }) => {
 		selectedVehicle.registration
 	);
 	const [notes, setNotes] = useState(selectedVehicle.notes);
-	const [repaired, setRepaired] = useState(selectedVehicle.repaired);
+	const [repaired, setRepaired] = useState(selectedVehicle.repaired.toString());
 
 	useEffect(() => {
 		localStorage.setItem('vehicles', JSON.stringify(vehicles));
