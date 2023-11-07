@@ -28,7 +28,11 @@ const Table = ({ vehicles, handleEdit, handleDelete }) => {
 								<td className='py-2 px-4 border-b'>{vehicle.registration}</td>
 								<td className='py-2 px-4 border-b'>{vehicle.notes}</td>
 								<td className='py-2 px-4 border-b'>
-									{vehicle.repaired ? <FaCheck /> : <FaTimes />}
+									{vehicle.repaired.toString() === 'true' ? (
+										<FaCheck />
+									) : (
+										<FaTimes />
+									)}
 								</td>
 								<td className='py-2 px-4 border-b text-right'>
 									<button

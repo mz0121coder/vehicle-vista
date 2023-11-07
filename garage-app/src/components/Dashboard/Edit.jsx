@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
+import { db } from '../../config/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 
-const Edit = ({ vehicles, selectedVehicle, setVehicles, setIsEditing }) => {
+const Edit = ({
+	vehicles,
+	selectedVehicle,
+	setVehicles,
+	setIsEditing,
+	getVehicles,
+}) => {
 	const id = selectedVehicle.id;
 	const [make, setMake] = useState(selectedVehicle.make);
 	const [model, setModel] = useState(selectedVehicle.model);
@@ -11,7 +19,7 @@ const Edit = ({ vehicles, selectedVehicle, setVehicles, setIsEditing }) => {
 	const [notes, setNotes] = useState(selectedVehicle.notes);
 	const [repaired, setRepaired] = useState(selectedVehicle.repaired);
 
-	const handleUpdate = e => {
+	const handleUpdate = async e => {
 		e.preventDefault();
 		if (!make || !model || !registration || !repaired) {
 			return Swal.fire({
@@ -31,12 +39,18 @@ const Edit = ({ vehicles, selectedVehicle, setVehicles, setIsEditing }) => {
 			repaired,
 		};
 
+		// Add a new document in collection "vehicles"
+		await setDoc(doc(db, 'vehicles', id), {
+			...updatedVehicle,
+		});
+
 		const updatedVehicles = vehicles.map(vehicle =>
 			vehicle.id === id ? updatedVehicle : vehicle
 		);
 
 		setVehicles(updatedVehicles);
 		setIsEditing(false);
+		getVehicles();
 
 		Swal.fire({
 			icon: 'success',

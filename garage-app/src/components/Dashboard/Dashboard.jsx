@@ -89,6 +89,7 @@ const Dashboard = ({ setIsAuthenticated }) => {
 					selectedVehicle={selectedVehicle}
 					setVehicles={setVehicles}
 					setIsEditing={setIsEditing}
+					getVehicles={getVehicles}
 				/>
 			)}
 		</div>
