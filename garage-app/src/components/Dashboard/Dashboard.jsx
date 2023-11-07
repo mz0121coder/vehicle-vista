@@ -6,31 +6,17 @@ import Add from './Add';
 import Edit from './Edit';
 import { vehiclesData } from '../../data/vehiclesData';
 
-import { collection, getDocs, doc, deleteDoc } from 'firebase/firestore';
-import { db } from '../../config/firestore.js';
-
 const Dashboard = ({ setIsAuthenticated }) => {
-	const [vehicles, setVehicles] = useState();
+	const [vehicles, setVehicles] = useState(
+		() => JSON.parse(localStorage.getItem('vehicles')) || vehiclesData
+	);
+	console.log({ vehicles });
 	const [selectedVehicle, setSelectedVehicle] = useState(null);
 	const [isAdding, setIsAdding] = useState(false);
 	const [isEditing, setIsEditing] = useState(false);
 
-	const getVehicles = async () => {
-		const querySnapshot = await getDocs(collection(db, 'vehicles'));
-		const vehicles = querySnapshot.docs.map(doc => ({
-			id: doc.id,
-			...doc.data(),
-		}));
-		setVehicles(vehicles);
-	};
-
-	useEffect(() => {
-		getVehicles();
-	}, []);
-
 	useEffect(() => {
 		localStorage.setItem('vehicles', JSON.stringify(vehicles));
-		console.log({ vehicles });
 	}, [vehicles]);
 
 	const handleEdit = id => {
@@ -50,8 +36,6 @@ const Dashboard = ({ setIsAuthenticated }) => {
 		}).then(result => {
 			if (result.value) {
 				const [vehicle] = vehicles.filter(vehicle => vehicle.id === id);
-				// delete document
-				if (db) deleteDoc(doc(db, 'vehicles', id));
 				Swal.fire({
 					icon: 'success',
 					title: 'Deleted!',
@@ -61,6 +45,7 @@ const Dashboard = ({ setIsAuthenticated }) => {
 				});
 				const vehiclesCopy = vehicles.filter(vehicle => vehicle.id !== id);
 				setVehicles(vehiclesCopy);
+				localStorage.removeItem('vehicles');
 			}
 		});
 	};
@@ -85,7 +70,6 @@ const Dashboard = ({ setIsAuthenticated }) => {
 					vehicles={vehicles}
 					setVehicles={setVehicles}
 					setIsAdding={setIsAdding}
-					getVehicles={getVehicles}
 				/>
 			)}
 			{isEditing && (
@@ -94,7 +78,6 @@ const Dashboard = ({ setIsAuthenticated }) => {
 					selectedVehicle={selectedVehicle}
 					setVehicles={setVehicles}
 					setIsEditing={setIsEditing}
-					getVehicles={getVehicles}
 				/>
 			)}
 		</div>

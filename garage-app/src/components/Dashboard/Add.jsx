@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
-import { collection, addDoc } from 'firebase/firestore';
-import { db } from '../../config/firestore.js';
 
-const Add = ({ vehicles, setVehicles, setIsAdding, getVehicles }) => {
+const Add = ({ vehicles, setVehicles, setIsAdding }) => {
 	const [make, setMake] = useState('');
 	const [model, setModel] = useState('');
 	const [registration, setRegistration] = useState('');
@@ -34,21 +32,10 @@ const Add = ({ vehicles, setVehicles, setIsAdding, getVehicles }) => {
 			repaired,
 		};
 
-		// Add a new document with a generated id.
-		if (db)
-			try {
-				await addDoc(collection(db, 'vehicles'), {
-					...newVehicle,
-				});
-			} catch (error) {
-				console.log(error);
-			}
-
 		const updatedVehicles = [...vehicles, newVehicle];
 
 		setVehicles(updatedVehicles);
 		setIsAdding(false);
-		getVehicles();
 
 		Swal.fire({
 			icon: 'success',
