@@ -48,7 +48,7 @@ const Login = ({ setIsAuthenticated }) => {
 	};
 
 	return (
-		<div className='flex justify-center items-center h-screen bg-gradient-to-b from-blue-800 to-red-900'>
+		<div className='flex justify-center items-center h-screen bg-gradient-to-b from-blue-950 to-red-600'>
 			<div className='w-full max-w-xs'>
 				<div className='text-center mb-8'>
 					<h1 className='mt-2 text-2xl font-bold text-white'>
