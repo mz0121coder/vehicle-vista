@@ -46,7 +46,7 @@ const Dashboard = ({ setIsAuthenticated }) => {
 				});
 				const vehiclesCopy = vehicles.filter(vehicle => vehicle.id !== id);
 				setVehicles(vehiclesCopy);
-				localStorage.removeItem('vehicles');
+				// localStorage.removeItem('vehicles');
 			}
 		});
 	};

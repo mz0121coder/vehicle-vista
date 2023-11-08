@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
+import { carBrands } from '../../data/carBrands';
 
 const Edit = ({ vehicles, selectedVehicle, setVehicles, setIsEditing }) => {
 	const id = selectedVehicle.id;
@@ -10,6 +11,7 @@ const Edit = ({ vehicles, selectedVehicle, setVehicles, setIsEditing }) => {
 	);
 	const [notes, setNotes] = useState(selectedVehicle.notes);
 	const [repaired, setRepaired] = useState(selectedVehicle.repaired.toString());
+	const [suggestions, setSuggestions] = useState([]);
 
 	useEffect(() => {
 		localStorage.setItem('vehicles', JSON.stringify(vehicles));
@@ -18,6 +20,8 @@ const Edit = ({ vehicles, selectedVehicle, setVehicles, setIsEditing }) => {
 
 	const handleUpdate = async e => {
 		e.preventDefault();
+		setSuggestions([]);
+
 		if (!make || !model || !registration || !repaired) {
 			return Swal.fire({
 				icon: 'error',
@@ -52,6 +56,26 @@ const Edit = ({ vehicles, selectedVehicle, setVehicles, setIsEditing }) => {
 		});
 	};
 
+	const handleMakeChange = e => {
+		const value = e.target.value;
+		setMake(value);
+
+		const filteredSuggestions = carBrands.filter(brand =>
+			brand.toLowerCase().includes(value.toLowerCase())
+		);
+
+		if (filteredSuggestions.length <= 3) {
+			setSuggestions(filteredSuggestions);
+		} else {
+			setSuggestions([]);
+		}
+	};
+
+	const handleSuggestionClick = suggestion => {
+		setMake(suggestion);
+		setSuggestions([]);
+	};
+
 	return (
 		<div className='mx-auto w-[95vw] max-w-[600px] mt-8'>
 			<form
@@ -70,9 +94,21 @@ const Edit = ({ vehicles, selectedVehicle, setVehicles, setIsEditing }) => {
 						type='text'
 						name='make'
 						value={make}
-						onChange={e => setMake(e.target.value)}
+						onChange={handleMakeChange}
 						required
 					/>
+					{suggestions.length > 0 && (
+						<ul className='mt-2 bg-white border border-gray-300 rounded'>
+							{suggestions.map(suggestion => (
+								<li
+									key={suggestion}
+									className='px-4 py-2 cursor-pointer hover:bg-gray-100'
+									onClick={() => handleSuggestionClick(suggestion)}>
+									{suggestion}
+								</li>
+							))}
+						</ul>
+					)}
 				</div>
 				<div className='mb-4'>
 					<label

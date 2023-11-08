@@ -41,12 +41,13 @@ const Table = ({ vehicles, handleEdit, handleDelete }) => {
 			<table className='w-full bg-white border border-gray-300'>
 				<thead>
 					<tr className='bg-gray-200'>
-						<th className='py-2 px-4 border-b'>Id</th>
-						<th className='py-2 px-4 border-b'>Make</th>
-						<th className='py-2 px-4 border-b'>Model</th>
-						<th className='py-2 px-4 border-b'>Reg.</th>
-						<th className='py-2 px-4 border-b'>Repaired</th>
-						<th className='py-2 px-4 border-b' colSpan={3}>
+						<th className='py-2 px-4 border-b text-left'>Id</th>
+						<th className='py-2 px-4 border-b text-left'>Logo</th>
+						<th className='py-2 px-4 border-b text-left'>Make</th>
+						<th className='py-2 px-4 border-b text-left'>Model</th>
+						<th className='py-2 px-4 border-b text-left'>Reg.</th>
+						<th className='py-2 px-4 border-b text-left'>Repaired</th>
+						<th className='py-2 px-4 border-b text-left' colSpan={3}>
 							Actions
 						</th>
 					</tr>
@@ -55,11 +56,26 @@ const Table = ({ vehicles, handleEdit, handleDelete }) => {
 					{currentVehicles.length > 0 ? (
 						currentVehicles.map((vehicle, i) => (
 							<tr key={vehicle.id} className={i % 2 === 0 ? 'bg-gray-100' : ''}>
-								<td className='py-2 px-4 border-b'>{vehicle.id}</td>
-								<td className='py-2 px-4 border-b'>{vehicle.make}</td>
-								<td className='py-2 px-4 border-b'>{vehicle.model}</td>
-								<td className='py-2 px-4 border-b'>{vehicle.registration}</td>
-								<td className='py-2 px-4 border-b'>
+								<td className='py-2 px-4 border-b text-left'>
+									{vehiclesPerPage * (currentPage - 1) + (i + 1)}
+								</td>
+								<td className='py-2 px-4 border-b text-left'>
+									{
+										<img
+											src={`https://www.carlogos.org/car-logos/${vehicle.make.toLowerCase()}-logo.png`}
+											alt='car logo'
+											className='w-[100px] bg-white mx-auto'
+										/>
+									}
+								</td>
+								<td className='py-2 px-4 border-b text-left'>{vehicle.make}</td>
+								<td className='py-2 px-4 border-b text-left'>
+									{vehicle.model}
+								</td>
+								<td className='py-2 px-4 border-b text-left'>
+									{vehicle.registration}
+								</td>
+								<td className='py-2 px-4 border-b text-left'>
 									{vehicle.repaired.toString() === 'true' ? (
 										<FaCheck />
 									) : (
@@ -126,12 +142,13 @@ const Table = ({ vehicles, handleEdit, handleDelete }) => {
 				<div className='fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-75'>
 					<div className='bg-white p-4 rounded shadow w-[95vw] max-w-[600px]'>
 						<h2 className='text-lg font-bold mb-4'>Vehicle Details</h2>
-						<img
-							src={`https://www.carlogos.org/car-logos/${selectedVehicle.make.toLowerCase()}-logo.png`}
-							alt={`${selectedVehicle.make} logo`}
-							width={200}
-							height={200}
-						/>
+						<div className='border w-[250px] mx-auto border-gray-300 rounded-lg p-4 mb-4'>
+							<img
+								src={`https://www.carlogos.org/car-logos/${selectedVehicle.make.toLowerCase()}-logo.png`}
+								alt='car logo'
+								className='w-[200px] h-auto mx-auto'
+							/>
+						</div>
 						<p>
 							<strong>Make:</strong> {selectedVehicle.make}
 						</p>

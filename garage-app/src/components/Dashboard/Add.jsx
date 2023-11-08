@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
+import { carBrands } from '../../data/carBrands';
 
 const Add = ({ vehicles, setVehicles, setIsAdding }) => {
 	const [make, setMake] = useState('');
@@ -7,6 +8,7 @@ const Add = ({ vehicles, setVehicles, setIsAdding }) => {
 	const [registration, setRegistration] = useState('');
 	const [notes, setNotes] = useState('');
 	const [repaired, setRepaired] = useState('');
+	const [suggestions, setSuggestions] = useState([]);
 
 	useEffect(() => {
 		localStorage.setItem('vehicles', JSON.stringify(vehicles));
@@ -15,6 +17,8 @@ const Add = ({ vehicles, setVehicles, setIsAdding }) => {
 
 	const handleAdd = async e => {
 		e.preventDefault();
+		setSuggestions([]);
+
 		if (!make || !model || !registration || !repaired) {
 			return Swal.fire({
 				icon: 'error',
@@ -46,6 +50,26 @@ const Add = ({ vehicles, setVehicles, setIsAdding }) => {
 		});
 	};
 
+	const handleMakeChange = e => {
+		const value = e.target.value;
+		setMake(value);
+
+		const filteredSuggestions = carBrands.filter(brand =>
+			brand.toLowerCase().includes(value.toLowerCase())
+		);
+
+		if (filteredSuggestions.length <= 3) {
+			setSuggestions(filteredSuggestions);
+		} else {
+			setSuggestions([]);
+		}
+	};
+
+	const handleSuggestionClick = suggestion => {
+		setMake(suggestion);
+		setSuggestions([]);
+	};
+
 	return (
 		<div className='mx-auto w-[95vw] max-w-[600px] mt-8'>
 			<form
@@ -64,9 +88,21 @@ const Add = ({ vehicles, setVehicles, setIsAdding }) => {
 						type='text'
 						name='make'
 						value={make}
-						onChange={e => setMake(e.target.value)}
+						onChange={handleMakeChange}
 						required
 					/>
+					{suggestions.length > 0 && (
+						<ul className='mt-2 bg-white border border-gray-300 rounded'>
+							{suggestions.map(suggestion => (
+								<li
+									key={suggestion}
+									className='px-4 py-2 cursor-pointer hover:bg-gray-100'
+									onClick={() => handleSuggestionClick(suggestion)}>
+									{suggestion}
+								</li>
+							))}
+						</ul>
+					)}
 				</div>
 				<div className='mb-4'>
 					<label

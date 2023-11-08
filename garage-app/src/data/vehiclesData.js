@@ -182,5 +182,3 @@ const vehiclesData = [
 ];
 
 export { vehiclesData };
-
-console.log(vehiclesData);
