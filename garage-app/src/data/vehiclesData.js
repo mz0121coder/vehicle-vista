@@ -89,6 +89,98 @@ const vehiclesData = [
 			'Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur.',
 		repaired: false,
 	},
+	{
+		id: 11,
+		make: 'Tesla',
+		model: 'Model S',
+		registration: 'EF90TSL',
+		notes:
+			'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+		repaired: true,
+	},
+	{
+		id: 12,
+		make: 'Kia',
+		model: 'Sportage',
+		registration: 'GH45KIA',
+		notes:
+			'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+		repaired: false,
+	},
+	{
+		id: 13,
+		make: 'Subaru',
+		model: 'Forester',
+		registration: 'IJ78SBR',
+		notes:
+			'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+		repaired: true,
+	},
+	{
+		id: 14,
+		make: 'Lexus',
+		model: 'RX',
+		registration: 'KL23LXS',
+		notes:
+			'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+		repaired: false,
+	},
+	{
+		id: 15,
+		make: 'Mazda',
+		model: 'CX-5',
+		registration: 'NO56MDZ',
+		notes:
+			'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.',
+		repaired: true,
+	},
+	{
+		id: 16,
+		make: 'Mitsubishi',
+		model: 'Outlander',
+		registration: 'WX56MTS',
+		notes:
+			'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+		repaired: true,
+	},
+	{
+		id: 17,
+		make: 'Jeep',
+		model: 'Wrangler',
+		registration: 'YZ78JPW',
+		notes:
+			'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+		repaired: false,
+	},
+	{
+		id: 18,
+		make: 'Volvo',
+		model: 'XC90',
+		registration: 'KL23VLV',
+		notes:
+			'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+		repaired: true,
+	},
+	{
+		id: 19,
+		make: 'Porsche',
+		model: '911',
+		registration: 'GH56PCH',
+		notes:
+			'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+		repaired: false,
+	},
+	{
+		id: 20,
+		make: 'Ferrari',
+		model: '488 GTB',
+		registration: 'NO23FRR',
+		notes:
+			'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.',
+		repaired: true,
+	},
 ];
 
 export { vehiclesData };
+
+console.log(vehiclesData);
