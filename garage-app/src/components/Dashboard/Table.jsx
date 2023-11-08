@@ -77,7 +77,7 @@ const Table = ({ vehicles, handleEdit, handleDelete }) => {
 
 			{selectedVehicle && (
 				<div className='fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-75'>
-					<div className='bg-white p-4 rounded shadow'>
+					<div className='bg-white p-4 rounded shadow w-[95vw] max-w-[600px]'>
 						<h2 className='text-lg font-bold mb-4'>Vehicle Details</h2>
 						<p>
 							<strong>Make:</strong> {selectedVehicle.make}

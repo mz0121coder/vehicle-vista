@@ -83,7 +83,7 @@ const Dashboard = ({ setIsAuthenticated }) => {
 	return (
 		<div className='mx-auto'>
 			{!isAdding && !isEditing && (
-				<div className='w-fit mx-auto mt-2'>
+				<div className='w-fit mx-auto mt-2 z-10'>
 					<Header
 						setIsAdding={setIsAdding}
 						setIsAuthenticated={setIsAuthenticated}

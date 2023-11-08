@@ -47,7 +47,7 @@ const Add = ({ vehicles, setVehicles, setIsAdding }) => {
 	};
 
 	return (
-		<div className='container mx-auto'>
+		<div className='mx-auto w-[95vw] max-w-[600px] mt-8'>
 			<form
 				onSubmit={handleAdd}
 				className='bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4'>
