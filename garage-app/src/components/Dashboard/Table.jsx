@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaCheck, FaTimes } from 'react-icons/fa';
 
 const Table = ({ vehicles, handleEdit, handleDelete }) => {
@@ -18,12 +18,23 @@ const Table = ({ vehicles, handleEdit, handleDelete }) => {
 	};
 
 	const handleNextPage = () => {
-		setCurrentPage(prevPage => prevPage + 1);
+		if (lastVehicleIndex < vehicles.length) {
+			setCurrentPage(prevPage => prevPage + 1);
+		}
 	};
 
 	const handlePreviousPage = () => {
-		setCurrentPage(prevPage => prevPage - 1);
+		if (currentPage > 1) {
+			setCurrentPage(prevPage => prevPage - 1);
+		}
 	};
+
+	useEffect(() => {
+		const totalPages = Math.ceil(vehicles.length / vehiclesPerPage);
+		if (currentPage > totalPages) {
+			setCurrentPage(totalPages);
+		}
+	}, [vehicles, currentPage, vehiclesPerPage]);
 
 	return (
 		<div>
@@ -115,6 +126,12 @@ const Table = ({ vehicles, handleEdit, handleDelete }) => {
 				<div className='fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-75'>
 					<div className='bg-white p-4 rounded shadow w-[95vw] max-w-[600px]'>
 						<h2 className='text-lg font-bold mb-4'>Vehicle Details</h2>
+						<img
+							src={`https://www.carlogos.org/car-logos/${selectedVehicle.make.toLowerCase()}-logo.png`}
+							alt={`${selectedVehicle.make} logo`}
+							width={200}
+							height={200}
+						/>
 						<p>
 							<strong>Make:</strong> {selectedVehicle.make}
 						</p>
