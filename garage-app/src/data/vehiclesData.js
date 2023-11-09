@@ -181,4 +181,6 @@ const vehiclesData = [
 	},
 ];
 
-export { vehiclesData };
+const vehiclesPerPage = 7;
+
+export { vehiclesData, vehiclesPerPage };

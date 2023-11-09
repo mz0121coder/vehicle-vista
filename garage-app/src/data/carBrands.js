@@ -15,7 +15,6 @@ const carBrands = [
 	'Subaru',
 	'Lexus',
 	'Jeep',
-	'Land Rover',
 	'Tesla',
 	'Porsche',
 	'Jaguar',

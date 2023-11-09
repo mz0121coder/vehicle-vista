@@ -4,7 +4,7 @@ import Header from './Header';
 import Table from './Table';
 import Add from './Add';
 import Edit from './Edit';
-import { vehiclesData } from '../../data/vehiclesData';
+import { vehiclesData, vehiclesPerPage } from '../../data/vehiclesData';
 
 const Dashboard = ({ setIsAuthenticated }) => {
 	const [vehicles, setVehicles] = useState(
@@ -24,6 +24,10 @@ const Dashboard = ({ setIsAuthenticated }) => {
 		const [vehicle] = vehicles.filter(vehicle => vehicle.id === id);
 		setSelectedVehicle(vehicle);
 		setIsEditing(true);
+		localStorage.setItem(
+			'page',
+			JSON.stringify(Math.ceil(id / vehiclesPerPage))
+		);
 	};
 
 	const handleDelete = id => {
@@ -46,7 +50,10 @@ const Dashboard = ({ setIsAuthenticated }) => {
 				});
 				const vehiclesCopy = vehicles.filter(vehicle => vehicle.id !== id);
 				setVehicles(vehiclesCopy);
-				// localStorage.removeItem('vehicles');
+				localStorage.setItem(
+					'page',
+					JSON.stringify(Math.ceil(id / vehiclesPerPage))
+				);
 			}
 		});
 	};
@@ -69,6 +76,7 @@ const Dashboard = ({ setIsAuthenticated }) => {
 			if (result.value) {
 				setVehicles(vehiclesData);
 				localStorage.removeItem('vehicles');
+				localStorage.setItem('page', JSON.stringify(1));
 				Swal.fire({
 					icon: 'success',
 					title: 'Reset!',

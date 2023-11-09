@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import { carBrands } from '../../data/carBrands';
+import { vehiclesPerPage } from '../../data/vehiclesData';
 
 const Add = ({ vehicles, setVehicles, setIsAdding }) => {
 	const [make, setMake] = useState('');
@@ -12,7 +13,6 @@ const Add = ({ vehicles, setVehicles, setIsAdding }) => {
 
 	useEffect(() => {
 		localStorage.setItem('vehicles', JSON.stringify(vehicles));
-		console.log({ vehicles });
 	}, [vehicles]);
 
 	const handleAdd = async e => {
@@ -37,6 +37,11 @@ const Add = ({ vehicles, setVehicles, setIsAdding }) => {
 		};
 
 		const updatedVehicles = [...vehicles, newVehicle];
+
+		localStorage.setItem(
+			'page',
+			JSON.stringify(Math.ceil(updatedVehicles.length / vehiclesPerPage))
+		);
 
 		setVehicles(updatedVehicles);
 		setIsAdding(false);

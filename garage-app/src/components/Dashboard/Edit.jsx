@@ -15,7 +15,6 @@ const Edit = ({ vehicles, selectedVehicle, setVehicles, setIsEditing }) => {
 
 	useEffect(() => {
 		localStorage.setItem('vehicles', JSON.stringify(vehicles));
-		console.log({ vehicles });
 	}, [vehicles]);
 
 	const handleUpdate = async e => {
