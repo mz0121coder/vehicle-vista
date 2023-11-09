@@ -5,13 +5,19 @@ import Table from './Table';
 import Add from './Add';
 import Edit from './Edit';
 import { vehiclesData } from '../../data/vehiclesData';
+import { getVehicles } from '../../utils/functions';
 
 const Dashboard = ({ setIsAuthenticated }) => {
-	const [vehicles, setVehicles] = useState(
-		() => JSON.parse(localStorage.getItem('vehicles')) || vehiclesData
-	);
+	const [vehicles, setVehicles] = useState([]);
+	const [isLoading, setIsLoading] = useState(true);
 
-	// console.log({ vehicles });
+	useEffect(() => {
+		const interval = setInterval(() => {
+			getVehicles();
+		}, 250);
+		return () => clearInterval(interval);
+	}, []);
+
 	const [selectedVehicle, setSelectedVehicle] = useState(null);
 	const [isAdding, setIsAdding] = useState(false);
 	const [isEditing, setIsEditing] = useState(false);
@@ -82,19 +88,24 @@ const Dashboard = ({ setIsAuthenticated }) => {
 
 	return (
 		<div className='mx-auto'>
-			{!isAdding && !isEditing && (
-				<div className='w-fit mx-auto mt-2 z-10'>
-					<Header
-						setIsAdding={setIsAdding}
-						setIsAuthenticated={setIsAuthenticated}
-						resetData={resetData}
-					/>
-					<Table
-						vehicles={vehicles}
-						handleEdit={handleEdit}
-						handleDelete={handleDelete}
-					/>
-				</div>
+			{isLoading ? (
+				<div>Loading...</div>
+			) : (
+				!isAdding &&
+				!isEditing && (
+					<div className='w-fit mx-auto mt-2 z-10'>
+						<Header
+							setIsAdding={setIsAdding}
+							setIsAuthenticated={setIsAuthenticated}
+							resetData={resetData}
+						/>
+						<Table
+							vehicles={vehicles}
+							handleEdit={handleEdit}
+							handleDelete={handleDelete}
+						/>
+					</div>
+				)
 			)}
 			{isAdding && (
 				<Add

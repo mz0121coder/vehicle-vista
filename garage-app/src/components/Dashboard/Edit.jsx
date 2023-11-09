@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import { carBrands } from '../../data/carBrands';
+// import axios from 'axios';
 
 const Edit = ({ vehicles, selectedVehicle, setVehicles, setIsEditing }) => {
 	const id = selectedVehicle.id;
@@ -15,7 +16,6 @@ const Edit = ({ vehicles, selectedVehicle, setVehicles, setIsEditing }) => {
 
 	useEffect(() => {
 		localStorage.setItem('vehicles', JSON.stringify(vehicles));
-		// console.log({ vehicles });
 	}, [vehicles]);
 
 	const handleUpdate = async e => {
@@ -40,42 +40,33 @@ const Edit = ({ vehicles, selectedVehicle, setVehicles, setIsEditing }) => {
 			repaired,
 		};
 
-		// 	const updatedVehicles = vehicles.map(vehicle =>
-		// 		vehicle.id === id ? updatedVehicle : vehicle
-		// 	);
-
-		// 	setVehicles(updatedVehicles);
-		// 	setIsEditing(false);
-
-		// 	Swal.fire({
-		// 		icon: 'success',
-		// 		title: 'Updated!',
-		// 		text: `${updatedVehicle.make} ${updatedVehicle.model}'s data has been updated.`,
-		// 		showConfirmButton: false,
-		// 		timer: 1500,
-		// 	});
-		// };
-
 		try {
-			const response = await axios.put(
-				`http://localhost:3000/vehicles/${id}`,
-				updatedVehicle
-			);
+			const response = await fetch(`http://localhost:3000/vehicles/${id}`, {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(updatedVehicle),
+			});
+
+			if (!response.ok) {
+				throw new Error('Failed to update vehicle');
+			}
+
 			const updatedVehicles = vehicles.map(vehicle =>
-				vehicle.id === id ? response.data : vehicle
+				vehicle.id === id ? updatedVehicle : vehicle
 			);
 			setVehicles(updatedVehicles);
 			setIsEditing(false);
 			Swal.fire({
 				icon: 'success',
 				title: 'Updated!',
-				text: `${response.data.make} ${response.data.model}'s data has been updated.`,
+				text: `${updatedVehicle.make} ${updatedVehicle.model}'s data has been updated.`,
 				showConfirmButton: false,
 				timer: 1500,
 			});
 		} catch (error) {
 			console.error(error);
-			// Handle error case
 		}
 	};
 

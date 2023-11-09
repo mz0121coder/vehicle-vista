@@ -12,7 +12,6 @@ const Add = ({ vehicles, setVehicles, setIsAdding }) => {
 
 	useEffect(() => {
 		localStorage.setItem('vehicles', JSON.stringify(vehicles));
-		// console.log({ vehicles });
 	}, [vehicles]);
 
 	const handleAdd = async e => {
@@ -35,6 +34,19 @@ const Add = ({ vehicles, setVehicles, setIsAdding }) => {
 			notes,
 			repaired,
 		};
+
+		// POST request if user is running server
+		try {
+			const response = await fetch('http://localhost:3000/vehicles', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(newVehicle),
+			});
+		} catch (error) {
+			console.log(error);
+		}
 
 		const updatedVehicles = [...vehicles, newVehicle];
 
