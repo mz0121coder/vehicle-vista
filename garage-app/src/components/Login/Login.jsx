@@ -48,23 +48,21 @@ const Login = ({ setIsAuthenticated }) => {
 	};
 
 	return (
-		<div className='flex justify-center items-center h-screen bg-gradient-to-b from-blue-950 to-red-600'>
-			<div className='w-full max-w-xs'>
-				<div className='text-center mb-8'>
-					<h1 className='mt-2 text-2xl font-bold text-white'>
-						Welcome to Vehicle Vista
-					</h1>
-					<img
-						src={logo}
-						alt='Vehicle Vista Logo'
-						className='mx-auto mt-4 max-w-80vw h-auto'
-					/>
-				</div>
+		<div className='flex justify-center items-center min-h-screen bg-gradient-to-b from-blue-950 to-red-600'>
+			<div className='text-center flex flex-col gap-3 bg-blue-700 rounded-lg'>
+				<img
+					src={logo}
+					alt='Vehicle Vista Logo'
+					className='mx-auto mt-4 w-[175px] rounded-lg'
+				/>
+				<h1 className='text-2xl font-bold text-white'>
+					Welcome to Vehicle Vista
+				</h1>
 				<form
-					className='bg-white shadow-md rounded px-8 pt-6 pb-8'
+					className='bg-white shadow-md rounded px-8 py-4 w-[95vw] max-w-[320px] mx-auto'
 					onSubmit={handleLogin}>
-					<h2 className='text-2xl text-center font-bold mb-6'>Admin Login</h2>
-					<div className='mb-4'>
+					<h2 className='text-2xl text-center font-bold mb-4'>Admin Login</h2>
+					<div className='mb-4 text-left'>
 						<label
 							className='block text-gray-700 text-sm font-bold mb-2'
 							htmlFor='email'>
@@ -75,12 +73,12 @@ const Login = ({ setIsAuthenticated }) => {
 							id='email'
 							type='email'
 							name='email'
-							placeholder='admin@example.com'
+							placeholder='admin@vehiclevista.com'
 							value={email}
 							onChange={e => setEmail(e.target.value)}
 						/>
 					</div>
-					<div className='mb-6'>
+					<div className='mb-6 text-left'>
 						<label
 							className='block text-gray-700 text-sm font-bold mb-2'
 							htmlFor='password'>
@@ -96,14 +94,12 @@ const Login = ({ setIsAuthenticated }) => {
 							onChange={e => setPassword(e.target.value)}
 						/>
 					</div>
-					<div className='flex items-center justify-center'>
-						<button
-							className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'
-							type='submit'
-							value='Login'>
-							Login
-						</button>
-					</div>
+					<button
+						className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mx-auto'
+						type='submit'
+						value='Login'>
+						Login
+					</button>
 				</form>
 			</div>
 		</div>

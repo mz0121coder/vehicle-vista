@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { FaCheck, FaTimes } from 'react-icons/fa';
-
 const Table = ({ vehicles, handleEdit, handleDelete }) => {
 	const [selectedVehicle, setSelectedVehicle] = useState(null);
 	const [currentPage, setCurrentPage] = useState(1);
@@ -8,34 +7,28 @@ const Table = ({ vehicles, handleEdit, handleDelete }) => {
 	const lastVehicleIndex = currentPage * vehiclesPerPage;
 	const firstVehicleIndex = lastVehicleIndex - vehiclesPerPage;
 	const currentVehicles = vehicles.slice(firstVehicleIndex, lastVehicleIndex);
-
 	const handleView = vehicle => {
 		setSelectedVehicle(vehicle);
 	};
-
 	const handleCloseModal = () => {
 		setSelectedVehicle(null);
 	};
-
 	const handleNextPage = () => {
 		if (lastVehicleIndex < vehicles.length) {
 			setCurrentPage(prevPage => prevPage + 1);
 		}
 	};
-
 	const handlePreviousPage = () => {
 		if (currentPage > 1) {
 			setCurrentPage(prevPage => prevPage - 1);
 		}
 	};
-
 	useEffect(() => {
 		const totalPages = Math.ceil(vehicles.length / vehiclesPerPage);
 		if (currentPage > totalPages) {
 			setCurrentPage(totalPages);
 		}
 	}, [vehicles, currentPage, vehiclesPerPage]);
-
 	return (
 		<div>
 			<table className='w-full bg-white border border-gray-300'>
@@ -64,7 +57,7 @@ const Table = ({ vehicles, handleEdit, handleDelete }) => {
 										<img
 											src={`https://www.carlogos.org/car-logos/${vehicle.make.toLowerCase()}-logo.png`}
 											alt='car logo'
-											className='w-[100px] bg-white mx-auto'
+											className='w-[100px] bg-white mx-auto border rounded-md'
 										/>
 									}
 								</td>
@@ -99,7 +92,7 @@ const Table = ({ vehicles, handleEdit, handleDelete }) => {
 								<td className='py-2 px-4 border-b'>
 									<button
 										onClick={() => handleDelete(vehicle.id)}
-										className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors duration-300'>
+										className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-1.5 rounded focus:outline-none focus:shadow-outline transition-colors duration-300'>
 										Delete
 									</button>
 								</td>
@@ -115,7 +108,7 @@ const Table = ({ vehicles, handleEdit, handleDelete }) => {
 				</tbody>
 			</table>
 			{vehicles.length > vehiclesPerPage && (
-				<div className='flex justify-center mt-4 gap-[4vw]'>
+				<div className='flex justify-center my-4 gap-16'>
 					<button
 						onClick={handlePreviousPage}
 						disabled={currentPage === 1}
@@ -176,5 +169,4 @@ const Table = ({ vehicles, handleEdit, handleDelete }) => {
 		</div>
 	);
 };
-
 export default Table;
