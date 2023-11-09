@@ -15,7 +15,7 @@ const Edit = ({ vehicles, selectedVehicle, setVehicles, setIsEditing }) => {
 
 	useEffect(() => {
 		localStorage.setItem('vehicles', JSON.stringify(vehicles));
-		console.log({ vehicles });
+		// console.log({ vehicles });
 	}, [vehicles]);
 
 	const handleUpdate = async e => {
@@ -40,20 +40,43 @@ const Edit = ({ vehicles, selectedVehicle, setVehicles, setIsEditing }) => {
 			repaired,
 		};
 
-		const updatedVehicles = vehicles.map(vehicle =>
-			vehicle.id === id ? updatedVehicle : vehicle
-		);
+		// 	const updatedVehicles = vehicles.map(vehicle =>
+		// 		vehicle.id === id ? updatedVehicle : vehicle
+		// 	);
 
-		setVehicles(updatedVehicles);
-		setIsEditing(false);
+		// 	setVehicles(updatedVehicles);
+		// 	setIsEditing(false);
 
-		Swal.fire({
-			icon: 'success',
-			title: 'Updated!',
-			text: `${updatedVehicle.make} ${updatedVehicle.model}'s data has been updated.`,
-			showConfirmButton: false,
-			timer: 1500,
-		});
+		// 	Swal.fire({
+		// 		icon: 'success',
+		// 		title: 'Updated!',
+		// 		text: `${updatedVehicle.make} ${updatedVehicle.model}'s data has been updated.`,
+		// 		showConfirmButton: false,
+		// 		timer: 1500,
+		// 	});
+		// };
+
+		try {
+			const response = await axios.put(
+				`http://localhost:3000/vehicles/${id}`,
+				updatedVehicle
+			);
+			const updatedVehicles = vehicles.map(vehicle =>
+				vehicle.id === id ? response.data : vehicle
+			);
+			setVehicles(updatedVehicles);
+			setIsEditing(false);
+			Swal.fire({
+				icon: 'success',
+				title: 'Updated!',
+				text: `${response.data.make} ${response.data.model}'s data has been updated.`,
+				showConfirmButton: false,
+				timer: 1500,
+			});
+		} catch (error) {
+			console.error(error);
+			// Handle error case
+		}
 	};
 
 	const handleMakeChange = e => {

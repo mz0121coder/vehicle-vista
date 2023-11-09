@@ -11,7 +11,7 @@ const Dashboard = ({ setIsAuthenticated }) => {
 		() => JSON.parse(localStorage.getItem('vehicles')) || vehiclesData
 	);
 
-	console.log({ vehicles });
+	// console.log({ vehicles });
 	const [selectedVehicle, setSelectedVehicle] = useState(null);
 	const [isAdding, setIsAdding] = useState(false);
 	const [isEditing, setIsEditing] = useState(false);

@@ -12,7 +12,7 @@ const Add = ({ vehicles, setVehicles, setIsAdding }) => {
 
 	useEffect(() => {
 		localStorage.setItem('vehicles', JSON.stringify(vehicles));
-		console.log({ vehicles });
+		// console.log({ vehicles });
 	}, [vehicles]);
 
 	const handleAdd = async e => {
