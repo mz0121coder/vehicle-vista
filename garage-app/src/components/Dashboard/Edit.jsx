@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import { carBrands } from '../../data/carBrands';
+import { server } from '../../data/atoms';
+import { useRecoilValue } from 'recoil';
 
 const Edit = ({ vehicles, selectedVehicle, setVehicles, setIsEditing }) => {
 	const id = selectedVehicle.id;
@@ -12,6 +14,7 @@ const Edit = ({ vehicles, selectedVehicle, setVehicles, setIsEditing }) => {
 	const [notes, setNotes] = useState(selectedVehicle.notes);
 	const [repaired, setRepaired] = useState(selectedVehicle.repaired.toString());
 	const [suggestions, setSuggestions] = useState([]);
+	const isServer = useRecoilValue(server);
 
 	useEffect(() => {
 		localStorage.setItem('vehicles', JSON.stringify(vehicles));
@@ -39,20 +42,22 @@ const Edit = ({ vehicles, selectedVehicle, setVehicles, setIsEditing }) => {
 			repaired,
 		};
 		// PUT request if server is running
-		try {
-			const response = await fetch(`http://localhost:3000/vehicles/${id}`, {
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(updatedVehicle),
-			});
+		if (isServer) {
+			try {
+				const response = await fetch(`http://localhost:3000/vehicles/${id}`, {
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(updatedVehicle),
+				});
 
-			if (!response.ok) {
-				throw new Error('Failed to update vehicle');
+				if (!response.ok) {
+					throw new Error('Failed to update vehicle');
+				}
+			} catch (error) {
+				console.error(error);
 			}
-		} catch (error) {
-			console.error(error);
 		}
 		// update is outside of try catch - still use localStorage when server isn't running
 		const updatedVehicles = vehicles.map(vehicle =>

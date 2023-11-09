@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import { carBrands } from '../../data/carBrands';
+import { server } from '../../data/atoms';
+import { useRecoilValue } from 'recoil';
 
 const Add = ({ vehicles, setVehicles, setIsAdding }) => {
 	const [make, setMake] = useState('');
@@ -9,6 +11,7 @@ const Add = ({ vehicles, setVehicles, setIsAdding }) => {
 	const [notes, setNotes] = useState('');
 	const [repaired, setRepaired] = useState('');
 	const [suggestions, setSuggestions] = useState([]);
+	const isServer = useRecoilValue(server);
 
 	useEffect(() => {
 		localStorage.setItem('vehicles', JSON.stringify(vehicles));
@@ -36,16 +39,18 @@ const Add = ({ vehicles, setVehicles, setIsAdding }) => {
 		};
 
 		// POST request if server is running
-		try {
-			const response = await fetch('http://localhost:3000/vehicles', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(newVehicle),
-			});
-		} catch (error) {
-			console.log(error);
+		if (isServer) {
+			try {
+				const response = await fetch('http://localhost:3000/vehicles', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(newVehicle),
+				});
+			} catch (error) {
+				console.log(error);
+			}
 		}
 		// add is outside of try catch - still use localStorage when server isn't running
 		const updatedVehicles = [...vehicles, newVehicle];

@@ -5,8 +5,11 @@ import Table from './Table';
 import Add from './Add';
 import Edit from './Edit';
 import { vehiclesData } from '../../data/vehiclesData';
+import { server } from '../../data/atoms';
+import { useRecoilState } from 'recoil';
 
 const Dashboard = ({ setIsAuthenticated }) => {
+	const [isServer, setIsServer] = useRecoilState(server);
 	const [vehicles, setVehicles] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 
@@ -16,6 +19,7 @@ const Dashboard = ({ setIsAuthenticated }) => {
 			const data = await response.json();
 			if (data) {
 				setVehicles(data);
+				setIsServer(true);
 			} else {
 				setVehicles(
 					() => JSON.parse(localStorage.getItem('vehicles')) || vehiclesData
@@ -59,12 +63,14 @@ const Dashboard = ({ setIsAuthenticated }) => {
 					timer: 1500,
 				});
 				// DELETE request if server is running
-				try {
-					fetch(`http://localhost:3000/vehicles/${id}`, {
-						method: 'DELETE',
-					});
-				} catch (error) {
-					console.error(error);
+				if (isServer) {
+					try {
+						fetch(`http://localhost:3000/vehicles/${id}`, {
+							method: 'DELETE',
+						});
+					} catch (error) {
+						console.error(error);
+					}
 				}
 				// filter vehicles outside of try catch - use localStorage when server isn't running
 				const vehiclesCopy = vehicles.filter(vehicle => vehicle.id !== id);
