@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import { carBrands } from '../../data/carBrands';
-// import axios from 'axios';
 
 const Edit = ({ vehicles, selectedVehicle, setVehicles, setIsEditing }) => {
 	const id = selectedVehicle.id;
@@ -39,7 +38,7 @@ const Edit = ({ vehicles, selectedVehicle, setVehicles, setIsEditing }) => {
 			notes,
 			repaired,
 		};
-
+		// PUT request if server is running
 		try {
 			const response = await fetch(`http://localhost:3000/vehicles/${id}`, {
 				method: 'PUT',
@@ -52,22 +51,22 @@ const Edit = ({ vehicles, selectedVehicle, setVehicles, setIsEditing }) => {
 			if (!response.ok) {
 				throw new Error('Failed to update vehicle');
 			}
-
-			const updatedVehicles = vehicles.map(vehicle =>
-				vehicle.id === id ? updatedVehicle : vehicle
-			);
-			setVehicles(updatedVehicles);
-			setIsEditing(false);
-			Swal.fire({
-				icon: 'success',
-				title: 'Updated!',
-				text: `${updatedVehicle.make} ${updatedVehicle.model}'s data has been updated.`,
-				showConfirmButton: false,
-				timer: 1500,
-			});
 		} catch (error) {
 			console.error(error);
 		}
+		// update is outside of try catch - still use localStorage when server isn't running
+		const updatedVehicles = vehicles.map(vehicle =>
+			vehicle.id === id ? updatedVehicle : vehicle
+		);
+		setVehicles(updatedVehicles);
+		setIsEditing(false);
+		Swal.fire({
+			icon: 'success',
+			title: 'Updated!',
+			text: `${updatedVehicle.make} ${updatedVehicle.model}'s data has been updated.`,
+			showConfirmButton: false,
+			timer: 1500,
+		});
 	};
 
 	const handleMakeChange = e => {

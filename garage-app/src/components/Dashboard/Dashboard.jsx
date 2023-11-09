@@ -5,17 +5,25 @@ import Table from './Table';
 import Add from './Add';
 import Edit from './Edit';
 import { vehiclesData } from '../../data/vehiclesData';
-import { getVehicles } from '../../utils/functions';
 
 const Dashboard = ({ setIsAuthenticated }) => {
 	const [vehicles, setVehicles] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
-		const interval = setInterval(() => {
-			getVehicles();
-		}, 250);
-		return () => clearInterval(interval);
+		const getVehicles = async () => {
+			const response = await fetch(`http://localhost:3000/vehicles`);
+			const data = await response.json();
+			if (data) {
+				setVehicles(data);
+			} else {
+				setVehicles(
+					() => JSON.parse(localStorage.getItem('vehicles')) || vehiclesData
+				);
+			}
+			setIsLoading(false);
+		};
+		getVehicles();
 	}, []);
 
 	const [selectedVehicle, setSelectedVehicle] = useState(null);
@@ -50,14 +58,22 @@ const Dashboard = ({ setIsAuthenticated }) => {
 					showConfirmButton: false,
 					timer: 1500,
 				});
+				// DELETE request if server is running
+				try {
+					fetch(`http://localhost:3000/vehicles/${id}`, {
+						method: 'DELETE',
+					});
+				} catch (error) {
+					console.error(error);
+				}
+				// filter vehicles outside of try catch - use localStorage when server isn't running
 				const vehiclesCopy = vehicles.filter(vehicle => vehicle.id !== id);
 				setVehicles(vehiclesCopy);
-				// localStorage.removeItem('vehicles');
 			}
 		});
 	};
 
-	const resetData = () => {
+	const resetData = async () => {
 		Swal.fire({
 			icon: 'warning',
 			title: 'Are you sure?',
@@ -71,8 +87,23 @@ const Dashboard = ({ setIsAuthenticated }) => {
 				cancelButton:
 					'bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline',
 			},
-		}).then(result => {
+		}).then(async result => {
 			if (result.value) {
+				try {
+					await fetch('http://localhost:3000/vehicles', {
+						method: 'DELETE',
+					});
+
+					await fetch('http://localhost:3000/vehicles', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify(vehiclesData),
+					});
+				} catch (error) {
+					console.error(error);
+				}
 				setVehicles(vehiclesData);
 				localStorage.removeItem('vehicles');
 				Swal.fire({

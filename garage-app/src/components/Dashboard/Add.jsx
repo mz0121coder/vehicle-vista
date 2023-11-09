@@ -35,7 +35,7 @@ const Add = ({ vehicles, setVehicles, setIsAdding }) => {
 			repaired,
 		};
 
-		// POST request if user is running server
+		// POST request if server is running
 		try {
 			const response = await fetch('http://localhost:3000/vehicles', {
 				method: 'POST',
@@ -47,12 +47,10 @@ const Add = ({ vehicles, setVehicles, setIsAdding }) => {
 		} catch (error) {
 			console.log(error);
 		}
-
+		// add is outside of try catch - still use localStorage when server isn't running
 		const updatedVehicles = [...vehicles, newVehicle];
-
 		setVehicles(updatedVehicles);
 		setIsAdding(false);
-
 		Swal.fire({
 			icon: 'success',
 			title: 'Added!',
