@@ -15,15 +15,17 @@ const Dashboard = ({ setIsAuthenticated }) => {
 
 	useEffect(() => {
 		const getVehicles = async () => {
-			const response = await fetch(`http://localhost:3000/vehicles`);
-			const data = await response.json();
-			if (data) {
-				setVehicles(data);
-				setIsServer(true);
-			} else {
-				setVehicles(
-					() => JSON.parse(localStorage.getItem('vehicles')) || vehiclesData
-				);
+			try {
+				const response = await fetch(`http://localhost:3000/vehicles`);
+				const data = await response.json();
+				if (data) {
+					setVehicles(data);
+					setIsServer(true);
+				}
+			} catch (error) {
+				console.error(error);
+				const storedVehicles = JSON.parse(localStorage.getItem('vehicles'));
+				setVehicles(storedVehicles?.length ? storedVehicles : vehiclesData);
 			}
 			setIsLoading(false);
 		};
@@ -79,7 +81,7 @@ const Dashboard = ({ setIsAuthenticated }) => {
 		});
 	};
 
-	const resetData = async () => {
+	const resetData = () => {
 		Swal.fire({
 			icon: 'warning',
 			title: 'Are you sure?',
@@ -93,23 +95,8 @@ const Dashboard = ({ setIsAuthenticated }) => {
 				cancelButton:
 					'bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline',
 			},
-		}).then(async result => {
+		}).then(result => {
 			if (result.value) {
-				try {
-					await fetch('http://localhost:3000/vehicles', {
-						method: 'DELETE',
-					});
-
-					await fetch('http://localhost:3000/vehicles', {
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json',
-						},
-						body: JSON.stringify(vehiclesData),
-					});
-				} catch (error) {
-					console.error(error);
-				}
 				setVehicles(vehiclesData);
 				localStorage.removeItem('vehicles');
 				Swal.fire({
@@ -125,7 +112,7 @@ const Dashboard = ({ setIsAuthenticated }) => {
 
 	return (
 		<div className='mx-auto'>
-			{isLoading ? (
+			{!vehicles.length ? (
 				<div>Loading...</div>
 			) : (
 				!isAdding &&
