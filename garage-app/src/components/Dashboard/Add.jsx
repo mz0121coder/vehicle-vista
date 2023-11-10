@@ -29,6 +29,7 @@ const Add = ({ vehicles, setVehicles, setIsAdding }) => {
 		}
 
 		const newVehicle = {
+			id: vehicles.length + 1,
 			make,
 			model,
 			registration,
