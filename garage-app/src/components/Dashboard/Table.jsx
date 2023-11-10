@@ -33,6 +33,7 @@ const Table = ({ vehicles, handleEdit, handleDelete }) => {
 		if (currentPage > totalPages) {
 			setCurrentPage(totalPages);
 		}
+		localStorage.setItem('page', JSON.stringify(currentPage));
 	}, [vehicles, currentPage, vehiclesPerPage]);
 
 	return (
