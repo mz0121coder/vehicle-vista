@@ -4,9 +4,9 @@ import Header from './Header';
 import Table from './Table';
 import Add from './Add';
 import Edit from './Edit';
-import { vehiclesData } from '../../data/vehiclesData';
 import { server } from '../../data/atoms';
 import { useRecoilState } from 'recoil';
+import { vehiclesData, vehiclesPerPage } from '../../data/vehiclesData';
 
 const Dashboard = ({ setIsAuthenticated }) => {
 	const [isServer, setIsServer] = useRecoilState(server);
@@ -41,9 +41,13 @@ const Dashboard = ({ setIsAuthenticated }) => {
 	}, [vehicles]);
 
 	const handleEdit = id => {
-		const [vehicle] = vehicles.filter(vehicle => vehicle.id === id);
+		const vehicle = vehicles.find(vehicle => vehicle.id === id);
 		setSelectedVehicle(vehicle);
 		setIsEditing(true);
+		localStorage.setItem(
+			'page',
+			JSON.stringify(Math.ceil(id / vehiclesPerPage))
+		);
 	};
 
 	const handleDelete = id => {
@@ -77,6 +81,10 @@ const Dashboard = ({ setIsAuthenticated }) => {
 				// filter vehicles outside of try catch - use localStorage when server isn't running
 				const vehiclesCopy = vehicles.filter(vehicle => vehicle.id !== id);
 				setVehicles(vehiclesCopy);
+				localStorage.setItem(
+					'page',
+					JSON.stringify(Math.ceil(id / vehiclesPerPage))
+				);
 			}
 		});
 	};
@@ -99,6 +107,7 @@ const Dashboard = ({ setIsAuthenticated }) => {
 			if (result.value) {
 				setVehicles(vehiclesData);
 				localStorage.removeItem('vehicles');
+				localStorage.setItem('page', JSON.stringify(1));
 				Swal.fire({
 					icon: 'success',
 					title: 'Reset!',

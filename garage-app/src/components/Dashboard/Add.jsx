@@ -3,6 +3,7 @@ import Swal from 'sweetalert2';
 import { carBrands } from '../../data/carBrands';
 import { server } from '../../data/atoms';
 import { useRecoilValue } from 'recoil';
+import { vehiclesPerPage } from '../../data/vehiclesData';
 
 const Add = ({ vehicles, setVehicles, setIsAdding }) => {
 	const [make, setMake] = useState('');
@@ -54,6 +55,12 @@ const Add = ({ vehicles, setVehicles, setIsAdding }) => {
 		}
 		// add is outside of try catch - still use localStorage when server isn't running
 		const updatedVehicles = [...vehicles, newVehicle];
+
+		localStorage.setItem(
+			'page',
+			JSON.stringify(Math.ceil(updatedVehicles.length / vehiclesPerPage))
+		);
+
 		setVehicles(updatedVehicles);
 		setIsAdding(false);
 		Swal.fire({

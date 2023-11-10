@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { FaCheck, FaTimes } from 'react-icons/fa';
+import { vehiclesPerPage } from '../../data/vehiclesData';
+
 const Table = ({ vehicles, handleEdit, handleDelete }) => {
 	const [selectedVehicle, setSelectedVehicle] = useState(null);
-	const [currentPage, setCurrentPage] = useState(1);
-	const vehiclesPerPage = 10;
+	const [currentPage, setCurrentPage] = useState(
+		() => Number(localStorage.getItem('page')) || 1
+	);
 	const lastVehicleIndex = currentPage * vehiclesPerPage;
 	const firstVehicleIndex = lastVehicleIndex - vehiclesPerPage;
 	const currentVehicles = vehicles.slice(firstVehicleIndex, lastVehicleIndex);
+
 	const handleView = vehicle => {
 		setSelectedVehicle(vehicle);
 	};
@@ -23,15 +27,18 @@ const Table = ({ vehicles, handleEdit, handleDelete }) => {
 			setCurrentPage(prevPage => prevPage - 1);
 		}
 	};
+
 	useEffect(() => {
 		const totalPages = Math.ceil(vehicles.length / vehiclesPerPage);
 		if (currentPage > totalPages) {
 			setCurrentPage(totalPages);
 		}
+		localStorage.setItem('page', JSON.stringify(currentPage));
 	}, [vehicles, currentPage, vehiclesPerPage]);
+
 	return (
 		<div>
-			<table className='w-full bg-white border border-gray-300'>
+			<table className='w-fit bg-white border border-gray-300'>
 				<thead>
 					<tr className='bg-gray-200'>
 						<th className='py-2 px-4 border-b text-left'>Id</th>
@@ -108,7 +115,7 @@ const Table = ({ vehicles, handleEdit, handleDelete }) => {
 				</tbody>
 			</table>
 			{vehicles.length > vehiclesPerPage && (
-				<div className='flex justify-center my-4 gap-16'>
+				<div className='flex justify-center mt-4 mb-6 gap-20'>
 					<button
 						onClick={handlePreviousPage}
 						disabled={currentPage === 1}
@@ -116,7 +123,7 @@ const Table = ({ vehicles, handleEdit, handleDelete }) => {
 							currentPage === 1
 								? 'bg-gray-500'
 								: 'bg-blue-500 hover:bg-blue-700'
-						} text-white font-bold py-2 px-4 rounded-l focus:outline-none focus:shadow-outline transition-colors duration-300`}>
+						} text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors duration-300`}>
 						Back
 					</button>
 					<button
@@ -126,7 +133,7 @@ const Table = ({ vehicles, handleEdit, handleDelete }) => {
 							lastVehicleIndex >= vehicles.length
 								? 'bg-gray-500'
 								: 'bg-blue-500 hover:bg-blue-700'
-						} text-white font-bold py-2 px-4 rounded-r focus:outline-none focus:shadow-outline transition-colors duration-300`}>
+						} text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors duration-300`}>
 						Next
 					</button>
 				</div>
